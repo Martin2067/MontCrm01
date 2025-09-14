@@ -22,7 +22,13 @@ $result = $conn->query($sql);
 <body>
     <div class="container">
         <h1>Přehled zaměstnanců</h1>
-        <a href="employee-add.php" class="action-button">Přidat zaměstnance</a>
+
+        <!-- Horní tlačítka -->
+        <div class="actions">
+            <a href="employee-add.php" class="btn btn-add">➕ Přidat zaměstnance</a>
+            <a href="dashboard.php" class="btn btn-back">⬅️ Zpět</a>
+        </div>
+
         <table class="data-table">
             <thead>
                 <tr>
@@ -52,14 +58,16 @@ $result = $conn->query($sql);
                         echo "<td>" . htmlspecialchars($row['hire_date']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['salary']) . " Kč</td>";
                         echo "<td>" . htmlspecialchars($row['notes']) . "</td>";
-                        echo "<td><a href='employee-edit.php?id=" . $row['id'] . "'>Upravit</a> | <a href='employee-delete.php?id=" . $row['id'] . "' onclick=\"return confirm('Opravdu chcete smazat tohoto zaměstnance?');\">Smazat</a></td>";
+                        echo "<td>
+                                <a href='employee-edit.php?id=" . $row['id'] . "' class='btn btn-edit'>✏️ Upravit</a>
+                                <a href='employee-delete.php?id=" . $row['id'] . "' class='btn btn-delete' onclick=\"return confirm('Opravdu chcete smazat tohoto zaměstnance?');\">🗑️ Smazat</a>
+                              </td>";
                         echo "</tr>";
                     }
                 } else {
                     echo "<tr><td colspan='10'>Žádní zaměstnanci nebyli nalezeni.</td></tr>";
                 }
                 ?>
-                <a href="dashboard.php"><button>Zpět</button></a>
             </tbody>
         </table>
     </div>

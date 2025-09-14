@@ -8,6 +8,9 @@ if (!isset($_SESSION['username'])) {
 include 'database/db_connection.php';
 
 $customers = [];
+$employees = [];
+
+// Zákazníci
 $customer_result = $conn->query("SELECT id, name FROM customers ORDER BY name ASC");
 if ($customer_result->num_rows > 0) {
     while($row = $customer_result->fetch_assoc()) {
@@ -15,8 +18,19 @@ if ($customer_result->num_rows > 0) {
     }
 }
 
+// Zaměstnanci (jen z aktuální firmy, pokud máš $_SESSION['company_id'])
+$company_id = $_SESSION['company_id'] ?? 1; // fallback 1
+$stmt = $conn->prepare("SELECT id, first_name, last_name FROM employees WHERE company_id = ? ORDER BY last_name ASC");
+$stmt->bind_param("i", $company_id);
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
+    $employees[] = $row;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $customer_id = $_POST['customer_id'];
+    $employee_id = $_POST['employee_id'] ?: "NULL"; // může být prázdné
     $order_name = $_POST['order_name'];
     $description = $_POST['description'];
     $start_date = $_POST['start_date'];
@@ -35,14 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = $conn->real_escape_string($price);
     $notes = $conn->real_escape_string($notes);
 
-    $sql = "INSERT INTO orders (customer_id, order_name, description, start_date, end_date, status, price, notes)
-            VALUES ('$customer_id', '$order_name', '$description', '$start_date', '$end_date', '$status', '$price', '$notes')";
+    $sql = "INSERT INTO orders (customer_id, employee_id, order_name, description, start_date, end_date, status, price, notes)
+            VALUES ('$customer_id', " . ($employee_id === "NULL" ? "NULL" : "'$employee_id'") . ", '$order_name', '$description', '$start_date', '$end_date', '$status', '$price', '$notes')";
 
     if ($conn->query($sql) === TRUE) {
         echo "<p class='success-message'>Nová zakázka byla úspěšně přidána!</p>";
-        // Volitelně přesměrovat na přehled zakázek
-        // header("Location: orders.php");
-        // exit();
+        // header("Location: orders.php"); exit();
     } else {
         echo "<p class='error-message'>Chyba při přidávání zakázky: " . $conn->error . "</p>";
     }
@@ -69,9 +81,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php else: ?>
                         <option value="">Vyberte zákazníka...</option>
                         <?php foreach ($customers as $customer): ?>
-                            <option value="<?php echo htmlspecialchars($customer['id']); ?>"><?php echo htmlspecialchars($customer['name']); ?></option>
+                            <option value="<?php echo htmlspecialchars($customer['id']); ?>">
+                                <?php echo htmlspecialchars($customer['name']); ?>
+                            </option>
                         <?php endforeach; ?>
                     <?php endif; ?>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="employee_id">Přiřazený zaměstnanec:</label>
+                <select name="employee_id" id="employee_id">
+                    <option value="">-- Nepřiřazeno --</option>
+                    <?php foreach ($employees as $emp): ?>
+                        <option value="<?php echo $emp['id']; ?>">
+                            <?php echo htmlspecialchars($emp['first_name'] . " " . $emp['last_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
 
