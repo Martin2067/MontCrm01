@@ -9,7 +9,7 @@
 .welcome-section {
     text-align: center;
     padding: 30px;
-    background-color: #c8c6c6;
+    background-color: #d2d0d0;
     border-bottom: 1px solid #ddd;
 }
 .welcome-section h1 {
@@ -74,6 +74,78 @@
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+.currency-section {
+  margin: 20px 0;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.currency-section h2 {
+  margin-bottom: 12px;
+  font-size: 18px;
+  color: #333;
+}
+
+.currency-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.currency-table th,
+.currency-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.currency-table th {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.currency-table tr:hover {
+  background-color: #f9f9f9;
+}
+/* Statistiky */
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+  margin: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+.card:hover { transform: translateY(-3px); }
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  color: #555;
+}
+.card p {
+  font-size: 20px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Hodiny */
+#clock {
+  font-size: 1.2em;
+  margin-top: 5px;
+  color: #333;
+}
+
+
+
 
 /* Responzivní design */
 @media (max-width: 768px) {
