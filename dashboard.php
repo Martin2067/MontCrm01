@@ -32,12 +32,12 @@ $items_count = $conn->query("SELECT COUNT(*) AS c FROM inventory WHERE company_i
         </div>
 
         <!-- Statistiky -->
-        <div class="stats-cards">
+        <!-- <div class="stats-cards">
             <div class="card"><h3>👥 Zákazníci</h3><p><?= $customers_count ?></p></div>
             <div class="card"><h3>📋 Zakázky</h3><p><?= $orders_count ?> (<?= $active_orders ?> aktivní)</p></div>
             <div class="card"><h3>👨‍💼 Zaměstnanci</h3><p><?= $employees_count ?></p></div>
             <div class="card"><h3>📦 Položky</h3><p><?= $items_count ?></p></div>
-        </div>
+        </div> -->
 
         <div class="content-section">
             <div class="left-section">
@@ -53,7 +53,7 @@ $items_count = $conn->query("SELECT COUNT(*) AS c FROM inventory WHERE company_i
                     <a href="calc-pay.php" class="dashboard-button">Kalkulace mezd</a>
                     <a href="calc-costs.php" class="dashboard-button">Kalkulace nákladů</a>
                     <a href="ico-ares.php" class="dashboard-button">Firma dle IČO</a>
-                    <a href="index.php" class="dashboard-button">Odhlásit se</a>
+                    <a href="logout.php" class="dashboard-button-end">Odhlásit se</a>
                 </div>
 
                 <!-- Kurzy měn -->

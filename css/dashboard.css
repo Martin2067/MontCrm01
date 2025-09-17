@@ -3,19 +3,20 @@
     flex-direction: column;
     height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #ffffff;
 }
 
 .welcome-section {
     text-align: center;
+    /* border: 1px solid #0a0f38; */
     padding: 30px;
-    background-color: #d2d0d0;
+    background-color: #3b82f6;
     border-bottom: 1px solid #ddd;
 }
 .welcome-section h1 {
     font-size: 2.0em;
     margin: 0;
-    color: #323b8d;
+    color: rgb(255, 255, 255);
 }
 
 .content-section {
@@ -47,8 +48,8 @@
     padding: 15px 30px;
     margin: 10px;
     text-decoration: none;
-    background-color: rgb(255, 255, 255);
-    color: #323b8d;
+    background-color: #3b82f6;
+    color: #ffffff;
     border-radius: 5px;
     border: solid 1px #1b1849;
     font-size: 1.2em;
@@ -59,6 +60,17 @@
     background-color: #0b54a1;
     color: white;
 }
+.dashboard-button-end {
+   padding: 15px 30px;
+    margin: 10px;
+    text-decoration: none;
+    background-color: #f32d2d;
+    color: #ffffff;
+    border-radius: 5px;
+    border: solid 1px #1b1849;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease; 
+}   
 
 .currency-section {
     margin-top: 20px;
@@ -69,7 +81,7 @@
 }
 
 #calendar {
-    width: 70%;
+    width: 90%;
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -89,7 +101,7 @@
 }
 
 .currency-table {
-  width: 100%;
+  width: 70%;
   border-collapse: collapse;
 }
 
@@ -101,24 +113,25 @@
 }
 
 .currency-table th {
-  background-color: #f4f4f4;
-  color: #333;
+  background-color: #3b82f6;
+  color: #ffffff;
 }
 
 .currency-table tr:hover {
   background-color: #f9f9f9;
 }
 /* Statistiky */
-.stats-cards {
+/* .stats-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 15px;
   margin: 20px;
-}
+} */
 
 .card {
   background: #fff;
   padding: 15px;
+  border: 1px solid #0a0f38;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   text-align: center;
@@ -141,7 +154,7 @@
 #clock {
   font-size: 1.2em;
   margin-top: 5px;
-  color: #333;
+  color: rgb(255, 255, 255);
 }
 
 
@@ -185,7 +198,8 @@
 }
 
 #notes-table th {
-    background-color: #f2f2f2;
+    background-color: #3b82f6;
+    color: white;
 }
 
 #note-input {

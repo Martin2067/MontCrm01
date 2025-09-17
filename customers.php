@@ -10,8 +10,11 @@ if (!isset($_SESSION['username'])) {
 include 'database/db_connection.php';
 
 // Získání dat z databáze
-$sql = "SELECT * FROM customers";
-$result = $conn->query($sql);
+$company_id = $_SESSION['company_id'];
+$stmt = $conn->prepare("SELECT * FROM customers WHERE company_id = ? ORDER BY name ASC");
+$stmt->bind_param("i", $company_id);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>

@@ -1,17 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['username'])) {
-    header("Location: index.php");
-    exit();
-}
-
 include 'database/db_connection.php';
 
-$id = intval($_GET['id']);
+$company_id = $_SESSION['company_id'];
+$id = (int)($_GET['id'] ?? 0);
 
-$sql = "DELETE FROM customers WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
+$stmt = $conn->prepare("DELETE FROM customers WHERE id=? AND company_id=?");
+$stmt->bind_param("ii", $id, $company_id);
 $stmt->execute();
 
 header("Location: customers.php");

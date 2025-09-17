@@ -7,12 +7,14 @@ if (!isset($_SESSION['username'])) {
 
 include 'database/db_connection.php';
 
-$id = intval($_GET['id']);
+$company_id = $_SESSION['company_id'];
+$id = (int)($_GET['id'] ?? 0);
 
-$sql = "DELETE FROM employees WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
-$stmt->execute();
+if ($id > 0 && $company_id) {
+    $stmt = $conn->prepare("DELETE FROM employees WHERE id=? AND company_id=?");
+    $stmt->bind_param("ii", $id, $company_id);
+    $stmt->execute();
+}
 
 header("Location: employees.php");
 exit();

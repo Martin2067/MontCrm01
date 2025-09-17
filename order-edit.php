@@ -8,17 +8,21 @@ if (!isset($_SESSION['username'])) {
 include 'database/db_connection.php';
 
 $id = intval($_GET['id']);
-$company_id = $_SESSION['company_id'] ?? 1;
+$company_id = $_SESSION['company_id'];
 
-// Načtení zakázky
-$sql = "SELECT * FROM orders WHERE id = ?";
+// 🔹 Načtení zakázky jen pro firmu
+$sql = "SELECT * FROM orders WHERE id=? AND company_id=?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
+$stmt->bind_param("ii", $id, $company_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $order = $result->fetch_assoc();
 
-// Načtení zákazníků firmy
+if (!$order) {
+    die("Zakázka nenalezena nebo nemáte oprávnění.");
+}
+
+// 🔹 Načtení zákazníků firmy
 $customers = [];
 $stmt = $conn->prepare("SELECT id, name FROM customers WHERE company_id=? ORDER BY name ASC");
 $stmt->bind_param("i", $company_id);
@@ -28,7 +32,7 @@ while ($row = $custRes->fetch_assoc()) {
     $customers[] = $row;
 }
 
-// Načtení zaměstnanců firmy
+// 🔹 Načtení zaměstnanců firmy
 $employees = [];
 $stmt = $conn->prepare("SELECT id, first_name, last_name FROM employees WHERE company_id=? ORDER BY last_name ASC");
 $stmt->bind_param("i", $company_id);
@@ -38,6 +42,7 @@ while ($row = $empRes->fetch_assoc()) {
     $employees[] = $row;
 }
 
+// 🔹 Uložení změn
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $customer_id = $_POST['customer_id'];
     $employee_id = $_POST['employee_id'] ?: null;
@@ -51,10 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $sql = "UPDATE orders 
             SET customer_id=?, employee_id=?, order_name=?, description=?, start_date=?, end_date=?, status=?, price=?, notes=? 
-            WHERE id=?";
+            WHERE id=? AND company_id=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(
-        "iisssssdsi",
+        "iisssssd sii",
         $customer_id,
         $employee_id,
         $order_name,
@@ -64,7 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $status,
         $price,
         $notes,
-        $id
+        $id,
+        $company_id
     );
     $stmt->execute();
 

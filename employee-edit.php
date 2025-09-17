@@ -4,79 +4,86 @@ if (!isset($_SESSION['username'])) {
     header("Location: index.php");
     exit();
 }
-
 include 'database/db_connection.php';
 
-// Načtení existujícího zaměstnance
-$id = intval($_GET['id']);
-$sql = "SELECT * FROM employees WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
-$stmt->execute();
-$result = $stmt->get_result();
-$employee = $result->fetch_assoc();
+$company_id = $_SESSION['company_id'];
+$id = (int)($_GET['id'] ?? 0);
 
+// načtení zaměstnance
+$stmt = $conn->prepare("SELECT * FROM employees WHERE id=? AND company_id=?");
+$stmt->bind_param("ii", $id, $company_id);
+$stmt->execute();
+$employee = $stmt->get_result()->fetch_assoc();
+
+if (!$employee) {
+    die("Zaměstnanec nenalezen.");
+}
+
+// uložení změn
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $first_name = $_POST['first_name'];
-    $last_name  = $_POST['last_name'];
-    $position   = $_POST['position'];
-    $email      = $_POST['email'];
-    $phone      = $_POST['phone'];
-    $address    = $_POST['address'];
-    $hire_date  = $_POST['hire_date'];
-    $salary     = $_POST['salary'];
-    $notes      = $_POST['notes'];
+    $first_name = $_POST['first_name'] ?? '';
+    $last_name = $_POST['last_name'] ?? '';
+    $position = $_POST['position'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $phone = $_POST['phone'] ?? '';
+    $address = $_POST['address'] ?? '';
+    $hire_date = $_POST['hire_date'] ?? null;
+    $salary = $_POST['salary'] ?? 0;
+    $notes = $_POST['notes'] ?? '';
 
     $sql = "UPDATE employees 
-            SET first_name=?, last_name=?, position=?, email=?, phone=?, address=?, hire_date=?, salary=?, notes=?
-            WHERE id=?";
+            SET first_name=?, last_name=?, position=?, email=?, phone=?, address=?, hire_date=?, salary=?, notes=? 
+            WHERE id=? AND company_id=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssssssi", $first_name, $last_name, $position, $email, $phone, $address, $hire_date, $salary, $notes, $id);
-    $stmt->execute();
+    $stmt->bind_param(
+        "ssssssssiii",
+        $first_name, $last_name, $position, $email, $phone, $address, $hire_date, $salary, $notes,
+        $id, $company_id
+    );
 
-    header("Location: employees.php");
-    exit();
+    if ($stmt->execute()) {
+        header("Location: employees.php");
+        exit();
+    } else {
+        echo "Chyba: " . htmlspecialchars($conn->error);
+    }
 }
 ?>
 <!DOCTYPE html>
 <html lang="cs">
-<head><meta charset="UTF-8"><title>Upravit zaměstnance</title>
-<link rel="stylesheet" href="css/form-edit.css">
-
-</head>
+<head><meta charset="UTF-8"><title>Upravit zaměstnance</title></head>
 <body>
-  <div class="form-container">
 <h1>Upravit zaměstnance</h1>
-<form method="POST">
-  <div class="form-group">
-    <label>Jméno: <input type="text" name="first_name" value="<?= htmlspecialchars($employee['first_name']) ?>"></label>
-  </div>
-  <div class="form-group">
-    <label>Příjmení: <input type="text" name="last_name" value="<?= htmlspecialchars($employee['last_name']) ?>"></label>
-  </div>
-  <div class="form-group">
-    <label>Pozice: <input type="text" name="position" value="<?= htmlspecialchars($employee['position']) ?>"></label>
-  </div>
-  <div class="form-group">
-    <label>Email: <input type="email" name="email" value="<?= htmlspecialchars($employee['email']) ?>"></label>
-  </div>
-  <div class="form-group">
-    <label>Telefon: <input type="text" name="phone" value="<?= htmlspecialchars($employee['phone']) ?>"></label>
-  </div>
-  <div class="form-group">
-  <label>Adresa: <input type="text" name="address" value="<?= htmlspecialchars($employee['address']) ?>"></label><br>
-  </div>
-  <div class="form-group">
-  <label>Datum nástupu: <input type="date" name="hire_date" value="<?= htmlspecialchars($employee['hire_date']) ?>"></label><br>
-  </div>
+<form method="post">
+    <label>Jméno:</label>
+    <input type="text" name="first_name" value="<?= htmlspecialchars($employee['first_name']) ?>" required><br>
 
-  <div class="form-group">
-  <label>Plat: <input type="number" name="salary" value="<?= htmlspecialchars($employee['salary']) ?>"></label><br>
-  </div>
-  <div class="form-group">
-  <label>Poznámky: <textarea name="notes"><?= htmlspecialchars($employee['notes']) ?></textarea></label><br>
-  <button type="submit" class="btn btn-save">💾 Uložit</button>
-        <a href="orders.php" class="btn btn-back">⬅️ Zpět</a>
+    <label>Příjmení:</label>
+    <input type="text" name="last_name" value="<?= htmlspecialchars($employee['last_name']) ?>" required><br>
+
+    <label>Pozice:</label>
+    <input type="text" name="position" value="<?= htmlspecialchars($employee['position']) ?>"><br>
+
+    <label>Email:</label>
+    <input type="email" name="email" value="<?= htmlspecialchars($employee['email']) ?>"><br>
+
+    <label>Telefon:</label>
+    <input type="text" name="phone" value="<?= htmlspecialchars($employee['phone']) ?>"><br>
+
+    <label>Adresa:</label>
+    <input type="text" name="address" value="<?= htmlspecialchars($employee['address']) ?>"><br>
+
+    <label>Datum nástupu:</label>
+    <input type="date" name="hire_date" value="<?= htmlspecialchars($employee['hire_date']) ?>"><br>
+
+    <label>Plat:</label>
+    <input type="number" step="0.01" name="salary" value="<?= htmlspecialchars($employee['salary']) ?>"><br>
+
+    <label>Poznámky:</label>
+    <textarea name="notes"><?= htmlspecialchars($employee['notes']) ?></textarea><br>
+
+    <button type="submit">Uložit</button>
 </form>
+<a href="employees.php">⬅️ Zpět</a>
 </body>
 </html>

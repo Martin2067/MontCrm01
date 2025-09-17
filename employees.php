@@ -7,8 +7,11 @@ if (!isset($_SESSION['username'])) {
 
 include 'database/db_connection.php';
 
-$sql = "SELECT * FROM employees ORDER BY last_name ASC";
-$result = $conn->query($sql);
+$company_id = $_SESSION['company_id'];
+$stmt = $conn->prepare("SELECT * FROM employees WHERE company_id = ? ORDER BY last_name ASC");
+$stmt->bind_param("i", $company_id);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>

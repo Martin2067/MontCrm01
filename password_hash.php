@@ -1,5 +1,5 @@
 <?php
-$password = "martin123"; // Nahraďte "heslo_uzivatele" skutečným heslem
+$password = "Johy123"; // Nahraďte "heslo_uzivatele" skutečným heslem
 
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 

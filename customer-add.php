@@ -9,31 +9,47 @@ include 'database/db_connection.php';
 
 // Zpracování formuláře pro přidání zákazníka
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];
-    $ico = $_POST['ico'];
-    $dic = $_POST['dic'];
-    $contact_term = $_POST['contact_term'];
-    $contact_info = $_POST['contact_info'];
-    $address = $_POST['address'];
-    $email = $_POST['email'];
-    $web = $_POST['web'];
-    $contact_person = $_POST['contact_person'];
-    $contact_person_email = $_POST['contact_person_email'];
-    $contact_person_phone = $_POST['contact_person_phone'];
-    $request_info = $_POST['request_info'];
-    $request_term = $_POST['request_term'];
-    $offer = $_POST['offer'];
-    $offer_price = $_POST['offer_price'];
-    $realization_term = $_POST['realization_term'];
-    $notes = $_POST['notes'];
-    $email_conversation = $_POST['email_conversation'];
+    $company_id = $_SESSION['company_id'];
 
-    $sql = "INSERT INTO customers (name, ico, dic, contact_term, contact_info, address, email, web, contact_person, contact_person_email, contact_person_phone, request_info, request_term, offer, offer_price, realization_term, notes, email_conversation) VALUES ('$name', '$ico', '$dic', '$contact_term', '$contact_info', '$address', '$email', '$web', '$contact_person', '$contact_person_email', '$contact_person_phone', '$request_info', '$request_term', '$offer', '$offer_price', '$realization_term', '$notes', '$email_conversation')";
+    $name = $_POST['name'] ?? '';
+    $ico = $_POST['ico'] ?? '';
+    $dic = $_POST['dic'] ?? '';
+    $contact_term = $_POST['contact_term'] ?? null;
+    $contact_info = $_POST['contact_info'] ?? '';
+    $address = $_POST['address'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $web = $_POST['web'] ?? '';
+    $contact_person = $_POST['contact_person'] ?? '';
+    $contact_person_email = $_POST['contact_person_email'] ?? '';
+    $contact_person_phone = $_POST['contact_person_phone'] ?? '';
+    $request_info = $_POST['request_info'] ?? '';
+    $request_term = $_POST['request_term'] ?? null;
+    $offer = $_POST['offer'] ?? '';
+    $offer_price = $_POST['offer_price'] ?? 0;
+    $realization_term = $_POST['realization_term'] ?? null;
+    $notes = $_POST['notes'] ?? '';
+    $email_conversation = $_POST['email_conversation'] ?? '';
 
-    if ($conn->query($sql) === TRUE) {
-        echo "Nový zákazník byl úspěšně přidán.";
+    $sql = "INSERT INTO customers 
+            (company_id, name, ico, dic, contact_term, contact_info, address, email, web,
+             contact_person, contact_person_email, contact_person_phone,
+             request_info, request_term, offer, offer_price, realization_term,
+             notes, email_conversation)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param(
+        "isssssssssssssssdss",
+        $company_id, $name, $ico, $dic, $contact_term, $contact_info, $address, $email, $web,
+        $contact_person, $contact_person_email, $contact_person_phone,
+        $request_info, $request_term, $offer, $offer_price, $realization_term,
+        $notes, $email_conversation
+    );
+
+    if ($stmt->execute()) {
+        echo "<p style='color:green;'>Nový zákazník byl úspěšně přidán.</p>";
     } else {
-        echo "Chyba: " . $sql . "<br>" . $conn->error;
+        echo "<p style='color:red;'>Chyba: " . htmlspecialchars($conn->error) . "</p>";
     }
 }
 ?>

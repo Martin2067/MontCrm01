@@ -9,18 +9,18 @@ if (!isset($_SESSION['username'])) {
 include 'database/db_connection.php';
 
 // Získání dat z databáze
+$company_id = $_SESSION['company_id'];
 $sql = "SELECT 
-            o.id,
-            o.order_name,
-            o.start_date,
-            o.end_date,
-            o.status,
-            o.price,
-            c.name AS customer_name
+          o.id, o.order_name, o.start_date, o.end_date, o.status, o.price,
+          c.name AS customer_name
         FROM orders o
-        JOIN customers c ON o.customer_id = c.id";
-
-$result = $conn->query($sql);
+        JOIN customers c ON o.customer_id = c.id
+        WHERE o.company_id = ?
+        ORDER BY o.id DESC";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $company_id);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
