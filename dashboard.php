@@ -48,7 +48,7 @@ $items_count = $conn->query("SELECT COUNT(*) AS c FROM inventory WHERE company_i
                     <a href="customers.php" class="dashboard-button">Zákazníci</a>
                     <a href="orders.php" class="dashboard-button">Zakázky</a> 
                     <a href="employees.php" class="dashboard-button">Zaměstnanci</a>
-                    <a href="inventory.php" class="dashboard-button">Sklad</a>
+                    <a href="inventory.php" class="dashboard-button-inventory">Sklad</a>
                     <a href="calc-order.php" class="dashboard-button">Kalkulace zakázky</a>
                     <a href="calc-pay.php" class="dashboard-button">Kalkulace mezd</a>
                     <a href="calc-costs.php" class="dashboard-button">Kalkulace nákladů</a>

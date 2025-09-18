@@ -71,6 +71,17 @@
     font-size: 1.2em;
     transition: background-color 0.3s ease; 
 }   
+.dashboard-button-inventory {
+   padding: 10px 30px;
+    margin: 10px;
+    text-decoration: none;
+    background-color: #4d834f;
+    color: #ffffff;
+    border-radius: 5px;
+    border: solid 1px #1b1849;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease; 
+}
 
 .currency-section {
     margin-top: 20px;
