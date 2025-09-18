@@ -44,7 +44,7 @@ form textarea {
     height: 150px;
 }
 
-form button {
+.submit-button {
     background-color: #007bff;
     color: white;
     padding: 12px 20px;
@@ -53,10 +53,26 @@ form button {
     cursor: pointer;
     font-size: 1em;
     transition: background-color 0.3s ease;
+    margin-right: 10px;
 }
 
-form button:hover {
+.submit-button:hover {
     background-color: #0056b3;
+}
+
+.back-button {
+    display: inline-block;
+    background-color: #6c757d;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #5a6268;
 }
 
 /* Responzivní design */

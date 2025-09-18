@@ -45,13 +45,13 @@
 }
 
 .dashboard-button {
-    padding: 15px 30px;
+    padding: 10px 30px;
     margin: 10px;
     text-decoration: none;
     background-color: #3b82f6;
     color: #ffffff;
     border-radius: 5px;
-    border: solid 1px #1b1849;
+    border: solid 1px #506ed0;
     font-size: 1.2em;
     transition: background-color 0.3s ease;
 }
@@ -61,7 +61,7 @@
     color: white;
 }
 .dashboard-button-end {
-   padding: 15px 30px;
+   padding: 10px 30px;
     margin: 10px;
     text-decoration: none;
     background-color: #f32d2d;

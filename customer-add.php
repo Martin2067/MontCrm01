@@ -120,9 +120,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="email_conversation">Emailová konverzace:</label>
             <textarea name="email_conversation"></textarea><br>
 
-            <button type="submit">Přidat zákazníka</button>
+            <button type="submit" class="submit-button">Přidat zákazníka</button>
+            <a href="employees.php" class="back-button">⬅️ Zpět</a>
+            
         </form>
     </div>
-    <a class="back" href="dashboard.php"><button>Zpět</button></a>
+    
 </body>
 </html>

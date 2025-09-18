@@ -1,6 +1,5 @@
 <?php
 
-
 session_start();
 if (!isset($_SESSION['username'])) {
     header("Location: index.php");
@@ -77,6 +76,7 @@ $result = $stmt->get_result();
                             echo "<td data-label='Poznámky'>" . htmlspecialchars($row['notes']) . "</td>";
                             echo "<td data-label='Emailová konverzace'>" . htmlspecialchars($row['email_conversation']) . "</td>";
                             echo "<td data-label='Akce'>"
+                                . "<a href='customer-detail.php?id=" . $row['id'] . "' class='btn'>Detail</a> "
                                 . "<a href='customer-edit.php?id=" . $row['id'] . "' class='btn'>Upravit</a>"
                                 . "<a href='customer-delete.php?id=" . $row['id'] . "' class='btn btn-danger'>Smazat</a>"
                                 . "</td>";

@@ -63,6 +63,7 @@ $result = $stmt->get_result();
                             echo "<td data-label='Stav'>" . htmlspecialchars($row['status']) . "</td>";
                             echo "<td data-label='Cena'>" . htmlspecialchars($row['price']) . " €</td>";
                             echo "<td data-label='Akce'>"
+                                . "<a href='order-detail.php?id=" . $row['id'] . "' class='btn'>Detail</a> "
                                 . "<a href='order-edit.php?id=" . $row['id'] . "' class='btn'>Upravit</a>"
                                 . "<a href='order-delete.php?id=" . $row['id'] . "' class='btn btn-danger'>Smazat</a>"
                                 . "</td>";

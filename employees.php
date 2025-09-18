@@ -62,6 +62,7 @@ $result = $stmt->get_result();
                         echo "<td>" . htmlspecialchars($row['salary']) . " Kč</td>";
                         echo "<td>" . htmlspecialchars($row['notes']) . "</td>";
                         echo "<td>
+                                <a href='employee-detail.php?id=" . $row['id'] . "' class='btn btn-view'>👁️ Detail</a>
                                 <a href='employee-edit.php?id=" . $row['id'] . "' class='btn btn-edit'>✏️ Upravit</a>
                                 <a href='employee-delete.php?id=" . $row['id'] . "' class='btn btn-delete' onclick=\"return confirm('Opravdu chcete smazat tohoto zaměstnance?');\">🗑️ Smazat</a>
                               </td>";
